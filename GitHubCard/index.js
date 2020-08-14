@@ -1,8 +1,29 @@
+const { default: Axios } = require("axios");
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+Axios
+  // .get(`https://api.github.com/users/sathyaganesan`)
+  .get(`https://api.github.com/users/sathyaganesan/followers`)
+  .then((res) => {
+    // console.log('Here is the res: ', res);
+    followersArray = res.data;
+    console.log(followersArray);
+    console.log(followersArray.name);
+    console.log(followersArray.login);
+    console.log(followersArray.location);
+    console.log(followersArray.followers);
+    console.log(followersArray.following);
+    
+
+  })
+
+  .catch((err) => {
+    console.log('Here is the res: ', err);
+  });
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,7 +49,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+let followersArray = [];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,7 +70,51 @@ const followersArray = [];
       </div>
     </div>
 */
+const cards = document.querySelector('.cards');
 
+function followersCard(argu) {
+const card = document.createElement('div');
+const cardImg = document.createElement('img');
+const cardInfo = document.createElement('div');
+const cardName = document.createElement('h3');
+const userName = document.createElement('p');
+const userLocation = document.createElement('p');
+const userProfile = document.createElement('p');
+const userPage = document.createElement('a');
+const followerCount = document.createElement('p');
+const followingCount = document.createElement('p');
+const userBio = document.createElement('p');
+
+card.appendChild(cardImg);
+card.appendChild(cardInfo);
+  cardInfo.appendChild(cardName);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(userLocation);
+  cardInfo.appendChild(userProfile);
+    userProfile.appendChild(userPage);
+    userPage.src = argu.data.url;
+  cardInfo.appendChild(followerCount);
+  cardInfo.appendChild(followingCount);
+  cardInfo.appendChild(userBio);
+
+card.classList.add('card');
+cardImg.classList.add('card img')
+// cardInfo.classList.add('card-info');
+cardName.classList.add('name');
+userName.classList.add('username');
+
+cardName.textContent = argu.name;
+userName.textContent = argu.login;
+userLocation.textContent = argu.location;
+followerCount.textContent = argu.followers;
+followersCard.textContent = argu.following;
+return card;
+
+}
+
+followersArray.forEach((item) => {
+  cards.appendChild(followersCard(item));
+});
 /*
   List of LS Instructors Github username's:
     tetondan
